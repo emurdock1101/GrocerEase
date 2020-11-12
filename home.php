@@ -1,19 +1,31 @@
 <?php
 require ('connectdb.php');
-require ('friend_db.php');
+require ('home_db_functions.php');
 
-$friends = getAllFriends();
+session_start();
 
-if ($_SERVER['REQUEST_METHOD'] == 'POST') {
-  if (!empty($_POST['action']) && $_POST['action'] == 'Add') {
-    addFriend($_POST['name'], $_POST['major'], $_POST['year']);
-    $friends = getAllFriends();
-  }
-  elseif (!empty($_POST['action']) && $_POST['action'] == 'Delete') {
-    deleteFriend($_POST['friend_to_delete']);
-    $friends = getAllFriends();
-  }
+if(!isset($_SESSION['username'])) {
+     header("Location: login.php");
+    //header("Location:http://example.com/login.php"); Change for Google Cloud
 }
+//session has started sucessfully
+else { 
+    $items = getAllitems();    
+    if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+        echo "<br><br><br><br><br><br><br><br>made 9";
+        if (!empty($_POST['logout']) && $_POST['logout'] == 'Log out') {
+            session_destroy();
+            header("Location: login.php");
+        }
+
+    // if (!empty($_POST['action']) && $_POST['action'] == 'Add') {
+    //   additem($_POST['name'], $_POST['major'], $_POST['year']);
+    //   $items = getAllitems();
+    // }
+    // elseif (!empty($_POST['action']) && $_POST['add_shopping_list'] == 'Add') {
+    //   addItemToShoppingList($name, $major, $year)
+    // }
+    }
 ?>
 
 <!DOCTYPE html>
@@ -29,31 +41,73 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
     <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
     <link rel="stylesheet" href="styles.css">
-    <link rel="icon" href="favicon.ico">
+    <link rel="icon" href="favicon.ico" type="image/x-icon">
 </head>
-
 
 <body>
     <nav class="navbar bg-light topnav">
-        <a href="home.php" class="navbar-brand"><img src="favicon.ico" class="icon"> GrocerEase </a>
+        <a href="home.php" class="navbar-brand"><img src="logowide.png" height="35" /></a>
 
-        <form class="form-inline">
+        <form class="form-inline" name="logoutForm" action="<?php $_SERVER['PHP_SELF'] ?>" method="post">
             <span class="navbar-text" id="usernamedisplay">
-                Welcome user56
+                Welcome <?php echo $_SESSION['username'] ?>
             </span>
             <span>
-                <a href="login.php" class="btn logoutbutton addbutton"> Log out </a>
+                <input id="logoutbutton" type="submit" value="Log out" name="logout"
+                    class="btn logoutbutton addbutton" />
             </span>
         </form>
     </nav>
     <div class="w3-sidebar w3-bar-block" id="sidebar">
-        <a href="home.php" class="w3-bar-item w3-button active">All foods</a>
+        <a href="home.php" class="w3-bar-item w3-button active">All Foods</a>
         <a href="" class="w3-bar-item w3-button sidenavbutton">My Inventory</a>
         <a href="" class="w3-bar-item w3-button sidenavbutton">My Shopping List</a>
     </div>
-    <div id="datatable">
-        <h1>All foods</h1>
-        <table class="w3-table w3-bordered w3-card-4" style="width:70%">
+    <div id="tablecontainer">
+        <h1>Add item</h1>
+        <form class="form-inline" action="/action_page.php">
+            <label for="itemnameinput" class="form-inline-item-15">Item name:</label>
+            <input type="text" id="itemnameinput" name="itemnameinput" class="form-inline-item-30">
+            <label for="itemcategoryinput" class="form-inline-item-15">Item category:</label>
+            <select id="itemcategoryinput" name="cars" class="form-inline-item-30">
+                <option value="Fruit">Fruit</option>
+                <option value="Vegetables">Vegetables</option>
+                <option value="Beverages">Beverages</option>
+                <option value="Grains">Grains</option>
+                <option value="Dairy">Dairy</option>
+                <option value="Meat">Meat</option>
+                <option value="Household">Household</option>
+                <option value="Other">Other</option>
+            </select>
+            <input type="submit" value="Add item to All Foods" name="action" class="btn addbutton" />
+        </form>
+        <hr>
+        </hr>
+        <h1>All Foods</h1>
+        <form name="" action="" method="post" class="form-inline" id="tablecategoryform">
+            <label for="tablecategory" class="form-inline-item-15">Filter by category:</label>
+            <select id="tablecategory" name="category" onchange="this.form.submit()">
+                <option value="All Foods">All Foods</option>
+                <option value="Fruit">Fruit</option>
+                <option value="Vegetables">Vegetables</option>
+                <option value="Beverages">Beverages</option>
+                <option value="Grains">Grains</option>
+                <option value="Dairy">Dairy</option>
+                <option value="Meat">Meat</option>
+                <option value="Household">Household</option>
+                <option value="Other">Other</option>
+            </select>
+        </form>
+        <?php
+        $sort=$_POST['category'];
+        if (!empty($_POST['category']) && $sort != "All Foods"){
+            $items = getCategory($sort);
+        }
+        else{
+            $items = getAllitems();
+        }
+        ?>
+        <table class="w3-table w3-bordered w3-card-4">
             <thead>
                 <tr class="tableheadrow">
                     <th width="20%">Item</th>
@@ -62,87 +116,35 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                     <th width="30%">Add to My Shopping List</th>
                 </tr>
             </thead>
+            <?php foreach ($items as $item): ?>
             <tr>
                 <td>
-                    filler text
+                    <? echo $item['name']; ?>
                 </td>
                 <td>
-                    filler text
+                    <? echo $item['catagory']; ?>
                 </td>
                 <td>
-                    <form action="" method="post">
-                        <input type="submit" value="Add" name="action" class="btn addbutton"
+                    <form action="<?php $_SERVER['PHP_SELF'] ?>" method="post">
+                        <input type="submit" value="Add" name="add_inventory" class="btn addbutton"
                             title="Update the record" />
-                        <input type="hidden" name="friend_to_update" value="name_of_friend_to_update" />
+                        <input type="hidden" name="item_to_update" value="name_of_item_to_update" />
                     </form>
                 </td>
                 <td>
-                    <form action="" method="post">
-                        <input type="submit" value="Add" name="action" class="btn addbutton"
-                            title="Permanently delete the record" />
-                        <input type="hidden" name="friend_to_delete" value="" />
+                    <form action="<?php $_SERVER['PHP_SELF'] ?>" method="post">
+                        <input type="submit" value="Add" name="add_shopping_list" class="btn addbutton" />
+                        <input type="hidden" name="item_name_shopping_list" value="<?php echo $item['name'] ?>" />
+                        <input type="hidden" name="item_category_shopping_list"
+                            value="<?php echo $item['catagory'] ?>" />
                     </form>
                 </td>
             </tr>
-
+            <?php endforeach; ?>
         </table>
     </div>
 </body>
 
 </html>
 
-
-<!-- 
-<h1>Frienddd book</h1>
-<form name="mainForm" action="simpleform.php" method="post">
-  <div class="form-group">
-    Your name:
-    <input type="text" class="form-control" name="name" required />        
-  </div>  
-  <div class="form-group">
-    Major:
-    <input type="text" class="form-control" name="major" required /> 
-  </div>  
-  <div class="form-group">
-    Year:
-    <input type="number" class="form-control" name="year" required max="4" min="1" />        
-  </div> 
-     
-  <input type="submit" value="Add" name="action" class="btn btn-dark" title="Insert a friend into a friends table" />
-  <input type="submit" value="Confirm update" name="action" class="btn btn-dark" title="Confirm update a friend" />
-  
-</form>   -->
-
-<!--   
-<hr/>
-<h2>List of Friends</h2>
-<table class="w3-table w3-bordered w3-card-4 center" style="width:70%">
-  <thead>
-  <tr style="background-color:#B0B0B0">
-    <th width="25%">Name</th>        
-    <th width="25%">Major</th>        
-    <th width="25%">Year</th> 
-    <th width="10%">Update ?</th>
-    <th width="10%">Delete ?</th> 
-  </tr>
-  </thead> -->
-<?php foreach ($friends as $item): ?>
-<!-- <tr>
-    <td><? echo $item['name']; ?></td>
-    <td><? echo $item['major']; ?></td>        
-    <td><? echo $item['year']; ?></td>       
-    <td>
-      <form action="<?php $_SERVER['PHP_SELF'] ?>" method="post">
-        <input type="submit" value="Update" name="action" class="btn btn-primary" title="Update the record" />             
-        <input type="hidden" name="friend_to_update" value="name_of_friend_to_update" />
-      </form> 
-    </td>                        
-    <td>
-      <form action="<?php $_SERVER['PHP_SELF'] ?>" method="post">
-        <input type="submit" value="Delete" name="action" class="btn btn-danger" title="Permanently delete the record" />      
-        <input type="hidden" name="friend_to_delete" value="<?php echo $item['name'] ?>" />
-      </form>
-    </td>                                              
-  </tr> -->
-<?php endforeach; ?>
-<!-- </table> -->
+<?php } ?>

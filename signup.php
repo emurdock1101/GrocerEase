@@ -1,24 +1,20 @@
 <?php
     require ('connectdb.php');
-    require ('login_db_functions.php');
+    require ('signup_db_functions.php');
 
     if ($_SERVER['REQUEST_METHOD'] == 'POST') {
-        if (!empty($_POST['login']) && $_POST['login'] == 'Log in') {
+        if (!empty($_POST['signup']) && $_POST['signup'] == 'Sign up') {
             $username = $_POST['username'];
             $password = $_POST['password'];
                 
-            if (logIn($username, $password)) {
+            if (signUp($username, $password)) {
                 session_start();
                 $_SESSION['username'] = $username;
                 header("Location: home.php");
             }
-            else {
-                echo '<p style="color:red; position:absolute; top:550px; margin-left:25%;">The username or password does not exist. Please try again. </p>';
-            }
         }
     }
 ?>
-
 
 <!DOCTYPE html>
 <html>
@@ -28,7 +24,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="author" content="Elliot Murdock">
     <meta name="description" content="Log in page for the GrocerEase app">
-    <title>GrocerEase - Log in</title>
+    <title>GrocerEase - Sign up</title>
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css"
         integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
     <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
@@ -42,23 +38,24 @@
         <a href="login.php" class="navbar-brand"><img src="favicon.ico" class="icon"> GrocerEase </a>
     </nav>
     <div id="loginsection">
-        <h1>Log in</h1>
+        <h1>Sign up</h1>
         <br>
-        <form name="mainForm" action="<?php $_SERVER['PHP_SELF'] ?>" method="post">
+        <form name="mainForm" action="" method="post">
             <div class="form-group">
-                Username:
+                Create a username:
                 <input type="text" class="form-control" name="username" required />
             </div>
             <div class="form-group">
-                Password:
+                Create a password (8 characters minimum):
                 <input type="password" class="form-control" name="password" required minlength="8" />
             </div>
             <br>
-            <input type="submit" value="Log in" name="login" class="btn logoutbutton addbutton" />
+            <input id="loginbutton" type="submit" value="Sign up" name="signup" class="btn logoutbutton addbutton"
+                title="Insert a friend into a friends table" />
         </form>
         <br>
         <br>
-        <a href="signup.php"> New to GrocerEase? Click to sign up!</a>
+        <a href="login.php"> Already a member? Click here to log in!</a>
 
     </div>
 </body>
