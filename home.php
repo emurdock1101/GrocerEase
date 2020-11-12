@@ -9,8 +9,8 @@ if(!isset($_SESSION['username'])) {
     //header("Location:http://example.com/login.php"); Change for Google Cloud
 }
 //session has started sucessfully
-else { 
-    $items = getAllitems();    
+else {   
+    $items = getAllitems();
     if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         if (!empty($_POST['logout']) && $_POST['logout'] == 'Log out') {
             session_destroy();
@@ -86,6 +86,7 @@ else {
         <form name="" action="" method="post" class="form-inline" id="tablecategoryform">
             <label for="tablecategory" class="form-inline-item-15">Filter by category:</label>
             <select id="tablecategory" name="category" onchange="this.form.submit()">
+            <select id="tablecategory" name="cars">
                 <option value="All Foods">All Foods</option>
                 <option value="Fruit"<?php echo (isset($_POST['category']) && $_POST['category'] === 'Fruit') ? 'selected' : ''; ?>>Fruit</option>
                 <option value="Vegetables"<?php echo (isset($_POST['category']) && $_POST['category'] === 'Vegetables') ? 'selected' : ''; ?>>Vegetables</option>
