@@ -12,7 +12,6 @@ if(!isset($_SESSION['username'])) {
 else { 
     $items = getAllitems();    
     if ($_SERVER['REQUEST_METHOD'] == 'POST') {
-        echo "<br><br><br><br><br><br><br><br>made 9";
         if (!empty($_POST['logout']) && $_POST['logout'] == 'Log out') {
             session_destroy();
             header("Location: login.php");
@@ -88,14 +87,14 @@ else {
             <label for="tablecategory" class="form-inline-item-15">Filter by category:</label>
             <select id="tablecategory" name="category" onchange="this.form.submit()">
                 <option value="All Foods">All Foods</option>
-                <option value="Fruit">Fruit</option>
-                <option value="Vegetables">Vegetables</option>
-                <option value="Beverages">Beverages</option>
-                <option value="Grains">Grains</option>
-                <option value="Dairy">Dairy</option>
-                <option value="Meat">Meat</option>
-                <option value="Household">Household</option>
-                <option value="Other">Other</option>
+                <option value="Fruit"<?php echo (isset($_POST['category']) && $_POST['category'] === 'Fruit') ? 'selected' : ''; ?>>Fruit</option>
+                <option value="Vegetables"<?php echo (isset($_POST['category']) && $_POST['category'] === 'Vegetables') ? 'selected' : ''; ?>>Vegetables</option>
+                <option value="Beverages"<?php echo (isset($_POST['category']) && $_POST['category'] === 'Beverages') ? 'selected' : ''; ?>>Beverages</option>
+                <option value="Grains"<?php echo (isset($_POST['category']) && $_POST['category'] === 'Grains') ? 'selected' : ''; ?>>Grains</option>
+                <option value="Dairy"<?php echo (isset($_POST['category']) && $_POST['category'] === 'Dairy') ? 'selected' : ''; ?>>Dairy</option>
+                <option value="Meat"<?php echo (isset($_POST['category']) && $_POST['category'] === 'Meat') ? 'selected' : ''; ?>>Meat</option>
+                <option value="Household"<?php echo (isset($_POST['category']) && $_POST['category'] === 'Household') ? 'selected' : ''; ?>>Household</option>
+                <option value="Other"<?php echo (isset($_POST['category']) && $_POST['category'] === 'Other') ? 'selected' : ''; ?>>Other</option>
             </select>
         </form>
         <?php
@@ -119,10 +118,10 @@ else {
             <?php foreach ($items as $item): ?>
             <tr>
                 <td>
-                    <? echo $item['name']; ?>
+                    <?php echo $item['name']; ?>
                 </td>
                 <td>
-                    <? echo $item['catagory']; ?>
+                    <?php echo $item['catagory']; ?>
                 </td>
                 <td>
                     <form action="<?php $_SERVER['PHP_SELF'] ?>" method="post">
