@@ -86,7 +86,6 @@ else {
         <form name="" action="" method="post" class="form-inline" id="tablecategoryform">
             <label for="tablecategory" class="form-inline-item-15">Filter by category:</label>
             <select id="tablecategory" name="category" onchange="this.form.submit()">
-            <select id="tablecategory" name="cars">
                 <option value="All Foods">All Foods</option>
                 <option value="Fruit"<?php echo (isset($_POST['category']) && $_POST['category'] === 'Fruit') ? 'selected' : ''; ?>>Fruit</option>
                 <option value="Vegetables"<?php echo (isset($_POST['category']) && $_POST['category'] === 'Vegetables') ? 'selected' : ''; ?>>Vegetables</option>
@@ -99,7 +98,9 @@ else {
             </select>
         </form>
         <?php
-        $sort=$_POST['category'];
+        if(isset($_POST['category'])){
+            $sort=$_POST['category'];
+        }
         if (!empty($_POST['category']) && $sort != "All Foods"){
             $items = getCategory($sort);
         }
