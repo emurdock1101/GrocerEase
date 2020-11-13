@@ -9,22 +9,21 @@ if(!isset($_SESSION['username'])) {
     //header("Location:http://example.com/login.php"); Change for Google Cloud
 }
 //session has started sucessfully
-else { 
+else {   
     $items = getAllitems();
     if ($_SERVER['REQUEST_METHOD'] == 'POST') {
-        echo "<br><br><br><br><br><br><br><br>made 9";
         if (!empty($_POST['logout']) && $_POST['logout'] == 'Log out') {
             session_destroy();
             header("Location: login.php");
         }
-
-    // if (!empty($_POST['action']) && $_POST['action'] == 'Add') {
-    //   additem($_POST['name'], $_POST['major'], $_POST['year']);
-    //   $items = getAllitems();
-    // }
-    // elseif (!empty($_POST['action']) && $_POST['add_shopping_list'] == 'Add') {
-    //   addItemToShoppingList($name, $major, $year)
-    // }
+        elseif (!empty($_POST['addItem']) && ($_POST['addItem'] == 'Add item to All Foods')) {      
+            $itemnameinput = $_POST['itemnameinput']; 
+            $itemcategoryinput = $_POST['itemcategoryinput'];  
+            
+            if (addItemToAllFoods($itemnameinput, $itemcategoryinput)) {
+                $items = getAllItems();    
+            }       
+        }
     }
 ?>
 
@@ -65,11 +64,11 @@ else {
     </div>
     <div id="tablecontainer">
         <h1>Add item</h1>
-        <form class="form-inline" action="/action_page.php">
+        <form name="addItemForm" class="form-inline" action="<?php $_SERVER['PHP_SELF'] ?>" method="post">
             <label for="itemnameinput" class="form-inline-item-15">Item name:</label>
-            <input type="text" id="itemnameinput" name="itemnameinput" class="form-inline-item-30">
+            <input type="text" name="itemnameinput" class="form-inline-item-30">
             <label for="itemcategoryinput" class="form-inline-item-15">Item category:</label>
-            <select id="itemcategoryinput" name="cars" class="form-inline-item-30">
+            <select name="itemcategoryinput" class="form-inline-item-30">
                 <option value="Fruit">Fruit</option>
                 <option value="Vegetables">Vegetables</option>
                 <option value="Beverages">Beverages</option>
@@ -79,25 +78,52 @@ else {
                 <option value="Household">Household</option>
                 <option value="Other">Other</option>
             </select>
-            <input type="submit" value="Add item to All Foods" name="action" class="btn addbutton" />
+            <input type="submit" value="Add item to All Foods" name="addItem" class="btn addbutton" />
         </form>
         <hr>
         </hr>
         <h1>All Foods</h1>
         <form name="" action="" method="post" class="form-inline" id="tablecategoryform">
             <label for="tablecategory" class="form-inline-item-15">Filter by category:</label>
-            <select id="tablecategory" name="cars">
+            <select id="tablecategory" name="category" onchange="this.form.submit()">
                 <option value="All Foods">All Foods</option>
-                <option value="Fruit">Fruit</option>
-                <option value="Vegetables">Vegetables</option>
-                <option value="Beverages">Beverages</option>
-                <option value="Grains">Grains</option>
-                <option value="Dairy">Dairy</option>
-                <option value="Meat">Meat</option>
-                <option value="Household">Household</option>
-                <option value="Other">Other</option>
+                <option value="Fruit"
+                    <?php echo (isset($_POST['category']) && $_POST['category'] === 'Fruit') ? 'selected' : ''; ?>>Fruit
+                </option>
+                <option value="Vegetables"
+                    <?php echo (isset($_POST['category']) && $_POST['category'] === 'Vegetables') ? 'selected' : ''; ?>>
+                    Vegetables</option>
+                <option value="Beverages"
+                    <?php echo (isset($_POST['category']) && $_POST['category'] === 'Beverages') ? 'selected' : ''; ?>>
+                    Beverages</option>
+                <option value="Grains"
+                    <?php echo (isset($_POST['category']) && $_POST['category'] === 'Grains') ? 'selected' : ''; ?>>
+                    Grains</option>
+                <option value="Dairy"
+                    <?php echo (isset($_POST['category']) && $_POST['category'] === 'Dairy') ? 'selected' : ''; ?>>Dairy
+                </option>
+                <option value="Meat"
+                    <?php echo (isset($_POST['category']) && $_POST['category'] === 'Meat') ? 'selected' : ''; ?>>Meat
+                </option>
+                <option value="Household"
+                    <?php echo (isset($_POST['category']) && $_POST['category'] === 'Household') ? 'selected' : ''; ?>>
+                    Household</option>
+                <option value="Other"
+                    <?php echo (isset($_POST['category']) && $_POST['category'] === 'Other') ? 'selected' : ''; ?>>Other
+                </option>
             </select>
         </form>
+        <?php
+        if(isset($_POST['category'])){
+            $sort=$_POST['category'];
+        }
+        if (!empty($_POST['category']) && $sort != "All Foods"){
+            $items = getCategory($sort);
+        }
+        else{
+            $items = getAllitems();
+        }
+        ?>
         <table class="w3-table w3-bordered w3-card-4">
             <thead>
                 <tr class="tableheadrow">
@@ -110,21 +136,21 @@ else {
             <?php foreach ($items as $item): ?>
             <tr>
                 <td>
-                    <? echo $item['name']; ?>
+                    <?php echo $item['name']; ?>
                 </td>
                 <td>
-                    <? echo $item['catagory']; ?>
+                    <?php echo $item['catagory']; ?>
                 </td>
                 <td>
                     <form action="<?php $_SERVER['PHP_SELF'] ?>" method="post">
-                        <input type="submit" value="Add" name="add_inventory" class="btn addbutton"
+                        <input type="submit" value="Add 1" name="add_inventory" class="btn addbutton"
                             title="Update the record" />
                         <input type="hidden" name="item_to_update" value="name_of_item_to_update" />
                     </form>
                 </td>
                 <td>
                     <form action="<?php $_SERVER['PHP_SELF'] ?>" method="post">
-                        <input type="submit" value="Add" name="add_shopping_list" class="btn addbutton" />
+                        <input type="submit" value="Add 1" name="add_shopping_list" class="btn addbutton" />
                         <input type="hidden" name="item_name_shopping_list" value="<?php echo $item['name'] ?>" />
                         <input type="hidden" name="item_category_shopping_list"
                             value="<?php echo $item['catagory'] ?>" />
