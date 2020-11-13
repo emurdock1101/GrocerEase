@@ -5,12 +5,15 @@ require ('home_db_functions.php');
 session_start();
 
 if(!isset($_SESSION['username'])) {
-     header("Location: login.php");
-    //header("Location:http://example.com/login.php"); Change for Google Cloud
+     header("Location: login.php"); //Change for Google Cloud
 }
 //session has started sucessfully
 else {   
+
     $items = getAllitems();
+    $notification = 'Successfully added to All Foods!';
+    $showNotification = false;
+
     if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         if (!empty($_POST['logout']) && $_POST['logout'] == 'Log out') {
             session_destroy();
@@ -21,8 +24,12 @@ else {
             $itemcategoryinput = $_POST['itemcategoryinput'];  
             
             if (addItemToAllFoods($itemnameinput, $itemcategoryinput)) {
-                $items = getAllItems();    
-            }       
+                $notification = 'Successfully added item to All Foods!';
+                $items = getAllItems();  
+            } else {
+                $notification = 'Item already exists in table.';
+            }
+            $showNotification = true;
         }
     }
 ?>
@@ -79,6 +86,7 @@ else {
                 <option value="Other">Other</option>
             </select>
             <input type="submit" value="Add item to All Foods" name="addItem" class="btn addbutton" />
+            <div id="snackbar"><?php echo $notification ?></div>
         </form>
         <hr>
         </hr>
@@ -160,8 +168,29 @@ else {
             <?php endforeach; ?>
         </table>
     </div>
+
+    <script>
+    function showNotification() {
+        var x = document.getElementById("snackbar");
+        x.className = "show";
+        setTimeout(function() {
+            x.className = x.className.replace("show", "");
+        }, 3000);
+    }
+    </script>
 </body>
 
 </html>
+
+<?php 
+if ($showNotification) {
+    echo 
+    '<script 
+        type="text/javascript">
+        showNotification(); 
+    </script>';
+    $showNotification = false;
+} 
+?>
 
 <?php } ?>
