@@ -16,7 +16,6 @@ function logIn($username, $password) {
     }
 
     $statement->closeCursor(); 
-    
     return $authenticated;   
 }
 
@@ -24,7 +23,6 @@ function updateLogInTime($username, $password) {
     global $db;
 
     $query = "UPDATE login SET time=now() WHERE username=:username AND password=:password LIMIT 1";
-    
     $statement = $db->prepare($query);
     $statement->bindValue(':username', $username);
     $statement->bindValue(':password', $password);

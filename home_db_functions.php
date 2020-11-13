@@ -12,24 +12,30 @@ function getAllItems() {
 
 function addItemToAllFoods($itemnameinput, $itemcategoryinput) {  
     global $db;  
-
-    $authenticated = false;
+    $addedItem = false;
 
     try {
-        $query = "INSERT INTO item_list VALUES(:itemnameinput, :itemcategoryinput, NULL)";
+        $query = "SELECT * FROM item_list WHERE name=:itemnameinput AND catagory=:itemcategoryinput LIMIT 1;";
         $statement = $db->prepare($query);
         $statement->bindValue(':itemnameinput', $itemnameinput);
         $statement->bindValue(':itemcategoryinput', $itemcategoryinput);
         $statement->execute();
-        $statement->closeCursor(); 
-        $authenticated = true;
+        $results = $statement->fetchAll(); //array
+        if (count($results) == 0) {
+            $query = "INSERT INTO item_list VALUES(:itemnameinput, :itemcategoryinput, NULL)";
+            $statement = $db->prepare($query);
+            $statement->bindValue(':itemnameinput', $itemnameinput);
+            $statement->bindValue(':itemcategoryinput', $itemcategoryinput);
+            $statement->execute();
+            $statement->closeCursor(); 
+            $addedItem = true;
+        }
     }
     catch (Exception $e) {
         $error_message = $e->getMessage();
         echo "<p>Error message: $error_message </p>";
     }
-    return $authenticated;   
-
+    return $addedItem;   
 }
 
 function getCategory($category) {
@@ -55,8 +61,6 @@ function getCategory($category) {
 //     $statement->closeCursor();    
 // }
 
-
-
 // function updateFriend($name, $major, $year)
 // {
 //     global $db;
@@ -68,7 +72,6 @@ function getCategory($category) {
 //     $statement->bindValue(':year', $year);
 //     $statement->execute();
 //     $statement->closeCursor();    
-	
 // }
 
 // function deleteFriend($name)

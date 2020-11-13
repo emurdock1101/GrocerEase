@@ -7,6 +7,42 @@
   --nyanza: #e4fde1;
 }
 
+@-webkit-keyframes fadein {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes fadein {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@-webkit-keyframes fadeout {
+  from {
+    opacity: 1;
+  }
+  to {
+    opacity: 0;
+  }
+}
+
+@keyframes fadeout {
+  from {
+    opacity: 1;
+  }
+  to {
+    opacity: 0;
+  }
+}
+
 body {
   font-size: 20px;
   font-family: "Lucida Sans", "Lucida Sans Regular", "Lucida Grande",
@@ -114,4 +150,25 @@ body {
 
 #logo {
   height: 40px;
+}
+
+#snackbar {
+  visibility: hidden;
+  min-width: 200px;
+  margin-left: -125px;
+  background-color: var(--fieryrose);
+  color: #fff;
+  text-align: center;
+  border-radius: 2px;
+  padding: 8px;
+  position: fixed;
+  z-index: 1;
+  left: 88%;
+  font-size: 16px;
+}
+
+#snackbar.show {
+  visibility: visible;
+  -webkit-animation: fadein 0.5s, fadeout 0.5s 2.5s;
+  animation: fadein 0.5s, fadeout 0.5s 2.5s;
 }
