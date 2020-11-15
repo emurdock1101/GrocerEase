@@ -74,9 +74,9 @@ function updateItemQuantity($username, $itemName, $quantity, $subtract) {
 
 function deleteShoppingListItem($username, $itemName) {
   global $db;
-	$query = "DELETE FROM item_list WHERE name=:name";
+	$query = "DELETE FROM shopping_list WHERE itemName=:itemName";
 	$statement = $db->prepare($query);
-	$statement->bindValue(':name', $itemName);
+	$statement->bindValue(':itemName', $itemName);
 	$statement->execute();      // run query
 	$statement->closeCursor();  // release hold on this connection
   return true;

@@ -60,8 +60,9 @@ else {
         elseif (!empty($_POST['deleteItem']) && ($_POST['deleteItem'] == 'Delete')) {
           $username = $_SESSION['username'];
           $itemName = $_POST['item_to_delete'];
-          if(deleteAllFoodsItem($username, $itemName)){
-            $notification = 'Successfully deleted item from the list!';
+          
+          if (deleteShoppingListItem($username, $itemName)){
+            $notification = 'Successfully deleted item from Shopping List!';
             $items = getAllItemsShoppingList($_SESSION['username']);
           } else{
             $notification = 'Item could not be deleted.';
