@@ -101,11 +101,10 @@ else {
         <table class="w3-table w3-bordered w3-card-4">
             <thead>
                 <tr class="tableheadrow">
-                    <th width="20%">Item</th>
+                    <th width="25%">Item</th>
                     <th width="25%">Quantity</th>
-                    <th width="20%">Bought</th>
-                    <th width="20%">Add to My Inventory</th>
-                    <th width="5%">Delete</th>
+                    <th width="25%">Add to My Inventory</th>
+                    <th width="25%">Delete</th>
                 </tr>
             </thead>
             <?php foreach ($items as $item): ?>
@@ -126,14 +125,6 @@ else {
                                 value="<?php echo $item['quantity'] - 1 ?>" />
                         </form>
                     </div>
-                </td>
-                <td>
-                    <form action="<?php $_SERVER['PHP_SELF'] ?>" method="post">
-                        <?php echo $item['bought']; ?>
-                        <!-- <input type="submit" value="Add" name="add_inventory" class="btn addbutton"
-                            title="Update the record" />
-                        <input type="hidden" name="item_to_update" value="name_of_item_to_update" /> -->
-                    </form>
                 </td>
                 <td>
                     <form action="<?php $_SERVER['PHP_SELF'] ?>" method="post">

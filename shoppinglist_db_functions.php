@@ -70,13 +70,13 @@ function updateItemQuantity($username, $itemName, $quantity, $subtract) {
     return $addedItem;
 }
 
-$query = "UPDATE friends SET major=:major, year=:year WHERE name=:name";
-$statement = $db->prepare($query);
-$statement->bindValue(':name', $name);
-$statement->bindValue(':major', $major);
-$statement->bindValue(':year', $year);
-$statement->execute();
-$statement->closeCursor();    
+// $query = "UPDATE friends SET major=:major, year=:year WHERE name=:name";
+// $statement = $db->prepare($query);
+// $statement->bindValue(':name', $name);
+// $statement->bindValue(':major', $major);
+// $statement->bindValue(':year', $year);
+// $statement->execute();
+// $statement->closeCursor();    
 
 function deleteShoppingListItem($username, $itemName) {
   global $db;
