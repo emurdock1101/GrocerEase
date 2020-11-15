@@ -1,4 +1,4 @@
-<?php
+<?php 
 
 function getAllItems() {
     global $db;
@@ -6,12 +6,12 @@ function getAllItems() {
     $statement = $db->prepare($query);
     $statement->execute();
     $results = $statement->fetchAll(); //array
-    $statement->closeCursor();
+    $statement->closeCursor();  
     return $results;
 }
 
-function addItemToAllFoods($itemnameinput, $itemcategoryinput) {
-    global $db;
+function addItemToAllFoods($itemnameinput, $itemcategoryinput) {  
+    global $db;  
     $addedItem = false;
 
     try {
@@ -27,7 +27,7 @@ function addItemToAllFoods($itemnameinput, $itemcategoryinput) {
             $statement->bindValue(':itemnameinput', $itemnameinput);
             $statement->bindValue(':itemcategoryinput', $itemcategoryinput);
             $statement->execute();
-            $statement->closeCursor();
+            $statement->closeCursor(); 
             $addedItem = true;
         }
     }
@@ -35,9 +35,9 @@ function addItemToAllFoods($itemnameinput, $itemcategoryinput) {
         $error_message = $e->getMessage();
         echo "<p>Error message: $error_message </p>";
     }
+  
     return $addedItem;
 }
-
 
 function addItemToInventoryList($username, $itemName) {
   global $db;
@@ -68,7 +68,6 @@ function addItemToInventoryList($username, $itemName) {
   }
   return $addedItem;
 }
-
 
 function addItemToShoppingList($username, $itemName){
   global $db;
@@ -110,7 +109,6 @@ function deleteAllFoodsItem($username, $itemName) {
   return true;
 }
 
-
 function getCategory($category) {
     global $db;
     $query = "SELECT * FROM item_list WHERE catagory=:category";
@@ -121,40 +119,3 @@ function getCategory($category) {
     $statement->closeCursor();
     return $results;
 }
-
-// function addFriends($name, $major, $year) {
-//     global $db;
-
-//     $query = "INSERT INTO friends VALUES(:name, :major, :year)";
-//     $statement = $db->prepare($query);
-//     $statement->bindValue(':name', $name);
-//     $statement->bindValue(':major', $major);
-//     $statement->bindValue(':year', $year);
-//     $statement->execute();
-//     $statement->closeCursor();
-// }
-
-// function updateFriend($name, $major, $year)
-// {
-//     global $db;
-
-//     $query = "UPDATE friends SET major=:major, year=:year WHERE name=:name";
-//     $statement = $db->prepare($query);
-//     $statement->bindValue(':name', $name);
-//     $statement->bindValue(':major', $major);
-//     $statement->bindValue(':year', $year);
-//     $statement->execute();
-//     $statement->closeCursor();
-// }
-
-// function deleteFriend($name)
-// {
-//     global $db;
-
-//     $query = "DELETE FROM friends WHERE name=:name";
-//     $statement = $db->prepare($query);
-//     $statement->bindValue(':name', $name);
-//     $statement->execute();
-//     $statement->closeCursor();
-// }
-// ?>
