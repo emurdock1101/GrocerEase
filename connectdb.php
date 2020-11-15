@@ -7,6 +7,7 @@
 // $host = 'grocerease-293115:us-east4:grocerease-sql-instance';
 /******************************/
 // connecting to DB on XAMPP (local)
+
 $username = 'root';
 $password = '';
 $host = 'localhost:3306';
