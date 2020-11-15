@@ -172,3 +172,14 @@ body {
   -webkit-animation: fadein 0.5s, fadeout 0.5s 2.5s;
   animation: fadein 0.5s, fadeout 0.5s 2.5s;
 }
+
+.plusbutton:hover {
+  background-color: var(--midnightgreen);
+  color: var(--fieryrose);
+}
+
+.plusbutton {
+  background-color: var(--nyanza);
+  color: var(--midnightgreen);
+  min-width: 30px;
+}
