@@ -50,12 +50,13 @@ else {
 
           if(addItemToShoppingList($username, $itemName)){
             $notification = 'Successfully added item to Shopping List!';
+            if (!empty($_POST['category']) && $sort != "All Foods"){
+                $items = getCategory($sort);
+            }
           } else{
             $notification = 'Item already exists in Shopping List.';
           }
           $showNotification = true;
-           //sets table filter
-            $items = getCategory($_SESSION['sort']);
         }
         //delete item from all foods list
         elseif (!empty($_POST['deleteItem']) && ($_POST['deleteItem'] == 'Delete')) {
@@ -68,15 +69,6 @@ else {
             $notification = 'Item could not be deleted.';
           }
           $showNotification = true;
-        }
-      
-        //sets table filter
-        if(isset($_POST['category'])) {
-            $_SESSION['sort']=$_POST['category'];
-        
-            if ($_SESSION['sort'] != "All Foods"){
-                $items = getCategory($_SESSION['sort']);
-            }    
         }
     }
 ?>
@@ -168,6 +160,17 @@ else {
                 </option>
             </select>
         </form>
+        <?php
+        if(isset($_POST['category'])){
+            $sort=$_POST['category'];
+        }
+        if (!empty($_POST['category']) && $sort != "All Foods"){
+            $items = getCategory($sort);
+        }
+        else{
+            $items = getAllitems();
+        }
+        ?>
         <table class="w3-table w3-bordered w3-card-4">
             <thead>
                 <tr class="tableheadrow">
