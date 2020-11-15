@@ -52,7 +52,7 @@ function addItemToInventoryList($username, $itemName) {
       $statement->execute();
       $results = $statement->fetchAll(); //array
       if (count($results) == 0) {
-          $query = "INSERT INTO home_inventory_list VALUES(:username, 3, :itemName, 1)";
+          $query = "INSERT INTO home_inventory_list VALUES(:username, :itemName, 1, NULL)";
           //the 2 will be changed to NULL once we can change the table in phpMyAdmin to be AUTO_INCREMENT
           $statement = $db->prepare($query);
           $statement->bindValue(':username', $username);
@@ -83,7 +83,7 @@ function addItemToShoppingList($username, $itemName){
       $statement->execute();
       $results = $statement->fetchAll(); //array
       if (count($results) == 0) {
-          $query = "INSERT INTO shopping_list VALUES(:username, 1, :itemName, 1, 0)";
+          $query = "INSERT INTO shopping_list VALUES(:username, :itemName, 1, 0, NULL)";
           //the 2 will be changed to NULL once we can change the table in phpMyAdmin to be AUTO_INCREMENT
           $statement = $db->prepare($query);
           $statement->bindValue(':username', $username);

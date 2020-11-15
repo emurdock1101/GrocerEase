@@ -209,10 +209,11 @@ else {
                     </form>
                 </td>
                 <td>
-                  <form action="<?php $_SERVER['PHP_SELF'] ?>" method="post">
-                    <input type="submit" value="Delete" name="deleteItem" class="btn btn-danger" title="Permanently delete the record" />
-                    <input type="hidden" name="item_to_delete" value="<?php echo $item['name'] ?>" />
-                  </form>
+                    <form action="<?php $_SERVER['PHP_SELF'] ?>" method="post">
+                        <input type="submit" value="Delete" name="deleteItem" class="btn btn-danger"
+                            title="Permanently delete the record" />
+                        <input type="hidden" name="item_to_delete" value="<?php echo $item['name'] ?>" />
+                    </form>
                 </td>
             </tr>
             <?php endforeach; ?>
