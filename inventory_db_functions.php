@@ -1,8 +1,8 @@
 <?php
 
-function getAllItemsShoppingList($username) {
+function getAllItemsInventoryList($username) {
     global $db;
-    $query = "SELECT * FROM shopping_list WHERE username=:username;";
+    $query = "SELECT * FROM home_inventory_list WHERE username=:username;";
     $statement = $db->prepare($query);
     $statement->bindValue(':username', $username);
     $statement->execute();
@@ -11,19 +11,19 @@ function getAllItemsShoppingList($username) {
     return $results;
 }
 
-function addItemToInventoryList($username, $itemName) {
+function addItemToShoppingList($username, $itemName) {
   global $db;
   $addedItem = false;
 
   try {
-      $query = "SELECT * FROM home_inventory_list WHERE username=:username AND itemName=:itemName LIMIT 1;";
+      $query = "SELECT * FROM shopping_list WHERE username=:username AND itemName=:itemName LIMIT 1;";
       $statement = $db->prepare($query);
       $statement->bindValue(':username', $username);
       $statement->bindValue(':itemName', $itemName);
       $statement->execute();
       $results = $statement->fetchAll(); //array
       if (count($results) == 0) {
-          $query = "INSERT INTO home_inventory_list VALUES(:username, :itemName, 1, NULL)";
+          $query = "INSERT INTO shopping_list VALUES(:username, :itemName, 1, 0, NULL)";
           $statement = $db->prepare($query);
           $statement->bindValue(':username', $username);
           $statement->bindValue(':itemName', $itemName);
@@ -48,18 +48,18 @@ function updateItemQuantity($username, $itemName, $quantity, $subtract) {
   }
 
   try {
-      $query = "SELECT * FROM shopping_list WHERE username=:username AND itemName=:itemName LIMIT 1;";
+      $query = "SELECT * FROM home_inventory_list WHERE username=:username AND itemName=:itemName LIMIT 1;";
       $statement = $db->prepare($query);
       $statement->bindValue(':username', $username);
       $statement->bindValue(':itemName', $itemName);
       $statement->execute();
       $results = $statement->fetchAll(); //array
       if (count($results) != 0) {
-          $query = "UPDATE shopping_list SET quantity=:quantity WHERE username=:username AND itemName=:itemName LIMIT 1;";
+          $query = "UPDATE home_inventory_list SET remaining=:remaining WHERE username=:username AND itemName=:itemName LIMIT 1;";
           $statement = $db->prepare($query);
           $statement->bindValue(':username', $username);
           $statement->bindValue(':itemName', $itemName);
-          $statement->bindValue(':quantity', $quantity);
+          $statement->bindValue(':remaining', $remaining);
           $statement->execute();
           $statement->closeCursor();
           $updatedQuantity = true;
@@ -72,9 +72,9 @@ function updateItemQuantity($username, $itemName, $quantity, $subtract) {
     return $updatedQuantity;
 }
 
-function deleteShoppingListItem($username, $itemName) {
+function deleteInventoryListItem($username, $itemName) {
   global $db;
-	$query = "DELETE FROM shopping_list WHERE itemName=:itemName AND username=:username";
+	$query = "DELETE FROM home_inventory_list WHERE itemName=:itemName AND username=:username";
 	$statement = $db->prepare($query);
 	$statement->bindValue(':itemName', $itemName);
   $statement->bindValue(':username', $username);
