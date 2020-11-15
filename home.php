@@ -32,7 +32,7 @@ else {
             $showNotification = true;
         }
         //add item to inventory list
-        elseif (!empty($_POST['add_inventory']) && ($_POST['add_inventory'] == 'Add 1')){
+        elseif (!empty($_POST['add_inventory']) && ($_POST['add_inventory'] == 'Add')){
           $username = $_SESSION['username'];
           $itemName = $_POST['item_to_add_inventory'];
 
@@ -45,7 +45,7 @@ else {
           $showNotification = true;
         }
         //add item to shopping list
-        elseif (!empty($_POST['add_shopping_list']) && ($_POST['add_shopping_list'] == 'Add 1')){
+        elseif (!empty($_POST['add_shopping_list']) && ($_POST['add_shopping_list'] == 'Add')){
           $username = $_SESSION['username'];
           $itemName = $_POST['item_name_shopping_list'];
 
@@ -194,14 +194,14 @@ else {
                 </td>
                 <td>
                     <form action="<?php $_SERVER['PHP_SELF'] ?>" method="post">
-                        <input type="submit" value="Add 1" name="add_inventory" class="btn addbutton"
+                        <input type="submit" value="Add" name="add_inventory" class="btn addbutton"
                             title="Update the record" />
                         <input type="hidden" name="item_to_update" value="name_of_item_to_update" />
                     </form>
                 </td>
                 <td>
                     <form action="<?php $_SERVER['PHP_SELF'] ?>" method="post">
-                        <input type="submit" value="Add 1" name="add_shopping_list" class="btn addbutton" />
+                        <input type="submit" value="Add" name="add_shopping_list" class="btn addbutton" />
                         <input type="hidden" name="item_name_shopping_list" value="<?php echo $item['name'] ?>" />
                         <input type="hidden" name="item_category_shopping_list"
                             value="<?php echo $item['catagory'] ?>" />
