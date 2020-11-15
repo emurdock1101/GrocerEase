@@ -181,5 +181,26 @@ body {
 .plusbutton {
   background-color: var(--nyanza);
   color: var(--midnightgreen);
-  min-width: 30px;
+  margin-left: 10px;
+}
+
+.minusbutton:hover {
+  background-color: var(--midnightgreen);
+  color: var(--fieryrose);
+}
+
+.minusbutton {
+  background-color: var(--fieryrose);
+  color: white;
+  margin-left: 10px;
+}
+
+.deletebutton {
+  background-color: var(--fieryrose);
+  color: white;
+  min-width: 80px;
+}
+.deletebutton:hover {
+  background-color: darkred;
+  color: white;
 }

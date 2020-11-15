@@ -202,7 +202,7 @@ else {
                 </td>
                 <td>
                     <form action="<?php $_SERVER['PHP_SELF'] ?>" method="post">
-                        <input type="submit" value="Delete" name="deleteItem" class="btn btn-danger"
+                        <input type="submit" value="Delete" name="deleteItem" class="btn deletebutton"
                             title="Permanently delete the record" />
                         <input type="hidden" name="item_to_delete" value="<?php echo $item['name'] ?>" />
                     </form>

@@ -40,34 +40,34 @@ function addItemToInventoryList($username, $itemName) {
   return $addedItem;
 }
 
-function updateItemInShoppingList($username, $itemName) {
-//   global $db;
-//   $addedItem = false;
+function updateItemQuantity($username, $itemName, $quantity) {
+  global $db;
+  $addedItem = false;
 
-//   try {
-//       $query = "SELECT * FROM shopping_list WHERE username=:username AND itemName=:itemName LIMIT 1;";
-//       //the two will be changed to NULL once we can change the table in phpMyAdmin
-//       $statement = $db->prepare($query);
-//       $statement->bindValue(':username', $username);
-//       $statement->bindValue(':itemName', $itemName);
-//       $statement->execute();
-//       $results = $statement->fetchAll(); //array
-//       if (count($results) == 0) {
-//           $query = "INSERT INTO shopping_list VALUES(:username, :itemName, 1, 0, NULL)";
-//           //the 2 will be changed to NULL once we can change the table in phpMyAdmin to be AUTO_INCREMENT
-//           $statement = $db->prepare($query);
-//           $statement->bindValue(':username', $username);
-//           $statement->bindValue(':itemName', $itemName);
-//           $statement->execute();
-//           $statement->closeCursor();
-//           $addedItem = true;
-//       }
-//     }
-//     catch (Exception $e) {
-//         $error_message = $e->getMessage();
-//         echo "<p>Error message: $error_message </p>";
-//     }
-//     return $addedItem;
+  try {
+      $query = "SELECT * FROM shopping_list WHERE username=:username AND itemName=:itemName LIMIT 1;";
+      //the two will be changed to NULL once we can change the table in phpMyAdmin
+      $statement = $db->prepare($query);
+      $statement->bindValue(':username', $username);
+      $statement->bindValue(':itemName', $itemName);
+      $statement->execute();
+      $results = $statement->fetchAll(); //array
+      if (count($results) == 0) {
+          $query = "INSERT INTO shopping_list VALUES(:username, :itemName, 1, 0, NULL)";
+          //the 2 will be changed to NULL once we can change the table in phpMyAdmin to be AUTO_INCREMENT
+          $statement = $db->prepare($query);
+          $statement->bindValue(':username', $username);
+          $statement->bindValue(':itemName', $itemName);
+          $statement->execute();
+          $statement->closeCursor();
+          $addedItem = true;
+      }
+    }
+    catch (Exception $e) {
+        $error_message = $e->getMessage();
+        echo "<p>Error message: $error_message </p>";
+    }
+    return $addedItem;
 }
 
 function deleteShoppingListItem($username, $itemName) {

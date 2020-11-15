@@ -20,8 +20,8 @@ else {
             session_destroy();
             header("Location: login.php");
         }
-        //edit shopping list item
-        elseif (!empty($_POST['updateItem']) && ($_POST['addItem'] == 'Update item in Shopping List')) {      
+        // subtract quantity from an item
+        elseif (!empty($_POST['subtract_quantity']) && ($_POST['subtract_quantity'] == '-')) {      
             $itemnameinput = $_POST['itemnameinput']; 
             $itemcategoryinput = $_POST['itemcategoryinput'];  
             
@@ -97,23 +97,14 @@ else {
         <a href="shoppinglist.php" class="w3-bar-item w3-button sidenavbutton active">My Shopping List</a>
     </div>
     <div id="tablecontainer">
-        <h1>Update item</h1>
-        <form name="updateItemForm" class="form-inline" action="<?php $_SERVER['PHP_SELF'] ?>" method="post">
-            <label for="itemnameinput" class="form-inline-item-15">Item name:</label>
-            <input type="text" name="itemnameinput" class="form-inline-item-30">
-            <input type="submit" value="Update item in Shopping List" name="updateItem" class="btn addbutton" />
-            <div id="snackbar"><?php echo $notification ?></div>
-        </form>
-        <hr>
-        </hr>
         <h1>Shopping List</h1>
         <table class="w3-table w3-bordered w3-card-4">
             <thead>
                 <tr class="tableheadrow">
                     <th width="20%">Item</th>
-                    <th width="20%">Quantity</th>
+                    <th width="25%">Quantity</th>
                     <th width="20%">Bought</th>
-                    <th width="25%">Add to My Inventory</th>
+                    <th width="20%">Add to My Inventory</th>
                     <th width="5%">Delete</th>
                 </tr>
             </thead>
@@ -126,25 +117,22 @@ else {
                     <div class="form-inline">
                         <?php echo $item['quantity']; ?>
                         <form action="<?php $_SERVER['PHP_SELF'] ?>" method="post">
-
-                            <input type="submit" value="+1" name="add_inventory" class="btn plusbutton"
-                                title="Update the record" />
-                            <input type="hidden" name="item_to_update" value="name_of_item_to_update" />
+                            <input type="submit" value="+" name="add_quantity" class="btn plusbutton" />
+                            <input type="hidden" name="item_quantity_added" value=<?php echo $item['quantity'] + 1?> />
                         </form>
                         <form action="<?php $_SERVER['PHP_SELF'] ?>" method="post">
-
-                            <input type="submit" value="-1" name="add_inventory" class="btn minusbutton"
-                                title="Update the record" />
-                            <input type="hidden" name="item_to_update" value="name_of_item_to_update" />
+                            <input type="submit" value="-" name="subtract_quantity" class="btn minusbutton" />
+                            <input type="hidden" name="item_quantity_subtracted"
+                                value=<?php echo $item['quantity'] - 1?> />
                         </form>
                     </div>
                 </td>
                 <td>
                     <form action="<?php $_SERVER['PHP_SELF'] ?>" method="post">
                         <?php echo $item['bought']; ?>
-                        <input type="submit" value="Add" name="add_inventory" class="btn addbutton"
+                        <!-- <input type="submit" value="Add" name="add_inventory" class="btn addbutton"
                             title="Update the record" />
-                        <input type="hidden" name="item_to_update" value="name_of_item_to_update" />
+                        <input type="hidden" name="item_to_update" value="name_of_item_to_update" /> -->
                     </form>
                 </td>
                 <td>
@@ -156,7 +144,7 @@ else {
                 </td>
                 <td>
                     <form action="<?php $_SERVER['PHP_SELF'] ?>" method="post">
-                        <input type="submit" value="Delete" name="deleteItem" class="btn btn-danger"
+                        <input type="submit" value="Delete" name="deleteItem" class="btn deletebutton"
                             title="Permanently delete the record" />
                         <input type="hidden" name="item_to_delete" value="<?php echo $item['name'] ?>" />
                     </form>
