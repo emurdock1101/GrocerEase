@@ -14,8 +14,8 @@ $host = 'grocerease-293115:us-east4:grocerease-sql-instance';
 // $dbname = 'grocerease_db';
 /******************************/
 
-$dsn = "mysql:host=$host;dbname=$dbname";
-// $dsn = "mysql:unix_socket=/cloudsql/$host;dbname=$dbname";
+// $dsn = "mysql:host=$host;dbname=$dbname";
+$dsn = "mysql:unix_socket=/cloudsql/$host;dbname=$dbname";
 $db = "";
 
 /** connect to the database **/
