@@ -8,7 +8,7 @@ if(!isset($_SESSION['username'])) {
      header("Location: login.php"); //Change for Google Cloud
 }
 //session has started sucessfully
-else {   
+else {
 
     $items = getAllitems();
     $notification = 'Successfully added to All Foods!';
@@ -19,18 +19,49 @@ else {
             session_destroy();
             header("Location: login.php");
         }
-        elseif (!empty($_POST['addItem']) && ($_POST['addItem'] == 'Add item to All Foods')) {      
-            $itemnameinput = $_POST['itemnameinput']; 
-            $itemcategoryinput = $_POST['itemcategoryinput'];  
-            
+        elseif (!empty($_POST['addItem']) && ($_POST['addItem'] == 'Add item to All Foods')) {
+            $itemnameinput = $_POST['itemnameinput'];
+            $itemcategoryinput = $_POST['itemcategoryinput'];
+
             if (addItemToAllFoods($itemnameinput, $itemcategoryinput)) {
                 $notification = 'Successfully added item to All Foods!';
-                $items = getAllItems();  
+                $items = getAllItems();
             } else {
                 $notification = 'Item already exists in table.';
             }
             $showNotification = true;
         }
+        //add item to inventory list
+        elseif (!empty($_POST['add_inventory']) && ($_POST['add_inventory'] == 'Add 1')){
+          $username = $_SESSION['username'];
+          $itemName = $_POST['item_to_add_inventory'];
+
+          if(addItemToInventoryList($username, $itemName)){
+            $notification = 'Successfully added item to Inventory List!';
+            $items = getAllItems();
+          } else{
+            $notification = 'Item already exists in inventory list.';
+          }
+          $showNotification = true;
+        }
+        //add item to shopping list
+        elseif (!empty($_POST['add_shopping_list']) && ($_POST['add_shopping_list'] == 'Add 1')){
+          $username = $_SESSION['username'];
+          $itemName = $_POST['item_name_shopping_list'];
+
+          if(addItemToShoppingList($username, $itemName)){
+            $notification = 'Successfully added item to Shopping List!';
+            $items = getAllItems();
+          } else{
+            $notification = 'Item already exists in shopping list.';
+          }
+          $showNotification = true;
+        }
+
+        // elseif (!empty($_POST['add_shopping_list']) && ($_POST['add_shopping_list'] == 'Add 1')){
+        //
+        // }
+
     }
 ?>
 
@@ -152,8 +183,8 @@ else {
                 <td>
                     <form action="<?php $_SERVER['PHP_SELF'] ?>" method="post">
                         <input type="submit" value="Add 1" name="add_inventory" class="btn addbutton"
-                            title="Update the record" />
-                        <input type="hidden" name="item_to_update" value="name_of_item_to_update" />
+                            title="Add item to Inventory" />
+                        <input type="hidden" name="item_to_add_inventory" value="<?php echo $item['name'] ?>" />
                     </form>
                 </td>
                 <td>
@@ -182,15 +213,15 @@ else {
 
 </html>
 
-<?php 
+<?php
 if ($showNotification) {
-    echo 
-    '<script 
+    echo
+    '<script
         type="text/javascript">
-        showNotification(); 
+        showNotification();
     </script>';
     $showNotification = false;
-} 
+}
 ?>
 
 <?php } ?>
