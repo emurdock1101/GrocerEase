@@ -1,9 +1,10 @@
 <?php 
 
-function getAllItems() {
+function getAllItemsShoppingList($username) {
     global $db;
-    $query = "SELECT * FROM shopping_list";
+    $query = "SELECT * FROM shopping_list WHERE username=:username;";
     $statement = $db->prepare($query);
+    $statement->bindValue(':username', $username);
     $statement->execute();
     $results = $statement->fetchAll(); //array
     $statement->closeCursor();  
@@ -53,30 +54,23 @@ function updateItemQuantity($username, $itemName, $quantity, $subtract) {
       $statement->bindValue(':itemName', $itemName);
       $statement->execute();
       $results = $statement->fetchAll(); //array
-      if (count($results) == 0) {
-          $query = "UPDATE shopping_list SET =:quantity WHERE username=:username AND itemName=:itemName LIMIT 1;";
+      if (count($results) != 0) {
+          $query = "UPDATE shopping_list SET quantity=:quantity WHERE username=:username AND itemName=:itemName LIMIT 1;";
           $statement = $db->prepare($query);
           $statement->bindValue(':username', $username);
           $statement->bindValue(':itemName', $itemName);
+          $statement->bindValue(':quantity', $quantity);
           $statement->execute();
           $statement->closeCursor();
-          $addedItem = true;
+          $updatedQuantity = true;
       }
     }
     catch (Exception $e) {
         $error_message = $e->getMessage();
         echo "<p>Error message: $error_message </p>";
     }
-    return $addedItem;
+    return $updatedQuantity;
 }
-
-// $query = "UPDATE friends SET major=:major, year=:year WHERE name=:name";
-// $statement = $db->prepare($query);
-// $statement->bindValue(':name', $name);
-// $statement->bindValue(':major', $major);
-// $statement->bindValue(':year', $year);
-// $statement->execute();
-// $statement->closeCursor();    
 
 function deleteShoppingListItem($username, $itemName) {
   global $db;

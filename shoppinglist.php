@@ -9,9 +9,8 @@ if(!isset($_SESSION['username'])) {
 }
 //session has started sucessfully
 else {   
-
-    $items = getAllitems();
-    $notification = 'Successfully added to Shopping List!';
+    $items = getAllItemsShoppingList($_SESSION['username']);
+    $notification = '';
     $showNotification = false;
 
     if ($_SERVER['REQUEST_METHOD'] == 'POST') {
@@ -21,38 +20,49 @@ else {
             header("Location: login.php");
         }
         // subtract quantity from an item
-        elseif (!empty($_POST['subtract_quantity']) && ($_POST['subtract_quantity'] == '-')) {      
+        elseif (!empty($_POST['subtract_quantity']) && ($_POST['subtract_quantity'] == '-')) {    
+            $username = $_SESSION['username'];
+            $itemName = $_POST['item_name_quantity_subtracted'];
             $quantity = $_POST['item_quantity_subtracted'];
+            
             if ($quantity < 0) {
                 $quantity = 0;
             }
             
             if (updateItemQuantity($username, $itemName, $quantity, true)) {
-                $items = getAllItems();  
-            } else {
-
+                $items = getAllItemsShoppingList($_SESSION['username']);
+            }
+        }
+        // add quantity to an item
+        elseif (!empty($_POST['add_quantity']) && ($_POST['add_quantity'] == '+')) {    
+            $username = $_SESSION['username'];
+            $itemName = $_POST['item_name_quantity_added'];
+            $quantity = $_POST['item_quantity_added'];
+            
+            if (updateItemQuantity($username, $itemName, $quantity, true)) {
+                $items = getAllItemsShoppingList($_SESSION['username']);
             }
         }
         //add item to inventory list
         elseif (!empty($_POST['add_inventory']) && ($_POST['add_inventory'] == 'Add')){
-          $username = $_SESSION['username'];
-          $itemName = $_POST['item_to_add_inventory'];
-
-          if(addItemToInventoryList($username, $itemName)){
-            $notification = 'Successfully added item to Inventory List!';
-            $items = getAllItems();
-          } else{
-            $notification = 'Item already exists in inventory list.';
+            $username = $_SESSION['username'];
+            $itemName = $_POST['item_name_inventory_list'];
+  
+            if(addItemToInventoryList($username, $itemName)){
+              $notification = 'Successfully added item to Inventory List!';
+              $items = getAllItemsShoppingList($_SESSION['username']);
+            } else{
+              $notification = 'Item already exists in Inventory List.';
+            }
+            $showNotification = true;
           }
-          $showNotification = true;
-        }
         //delete item from Shopping List
         elseif (!empty($_POST['deleteItem']) && ($_POST['deleteItem'] == 'Delete')) {
           $username = $_SESSION['username'];
           $itemName = $_POST['item_to_delete'];
           if(deleteAllFoodsItem($username, $itemName)){
             $notification = 'Successfully deleted item from the list!';
-            $items = getAllItems();
+            $items = getAllItemsShoppingList($_SESSION['username']);
           } else{
             $notification = 'Item could not be deleted.';
           }
@@ -97,7 +107,10 @@ else {
         <a href="shoppinglist.php" class="w3-bar-item w3-button sidenavbutton active">My Shopping List</a>
     </div>
     <div id="tablecontainer">
-        <h1>Shopping List</h1>
+        <div class="form-inline">
+            <h1>Shopping List</h1>
+            <div id="snackbar"><?php echo $notification ?></div>
+        </div>
         <table class="w3-table w3-bordered w3-card-4">
             <thead>
                 <tr class="tableheadrow">
@@ -117,10 +130,15 @@ else {
                         <?php echo $item['quantity']; ?>
                         <form action="<?php $_SERVER['PHP_SELF'] ?>" method="post">
                             <input type="submit" value="+" name="add_quantity" class="btn plusbutton" />
+                            <input type="hidden" name="item_name_quantity_added"
+                                value="<?php echo $item['itemName'] ?>" />
                             <input type="hidden" name="item_quantity_added" value=<?php echo $item['quantity'] + 1?> />
+
                         </form>
                         <form action="<?php $_SERVER['PHP_SELF'] ?>" method="post">
                             <input type="submit" value="-" name="subtract_quantity" class="btn minusbutton" />
+                            <input type="hidden" name="item_name_quantity_subtracted"
+                                value="<?php echo $item['itemName'] ?>" />
                             <input type="hidden" name="item_quantity_subtracted"
                                 value="<?php echo $item['quantity'] - 1 ?>" />
                         </form>
@@ -128,16 +146,15 @@ else {
                 </td>
                 <td>
                     <form action="<?php $_SERVER['PHP_SELF'] ?>" method="post">
-                        <input type="submit" value="Add" name="add_inventory" class="btn addbutton"
-                            title="Update the record" />
-                        <input type="hidden" name="item_to_update" value="item_to_add_inventory" />
+                        <input type="submit" value="Add" name="add_inventory" class="btn addbutton" />
+                        <input type="hidden" name="item_name_inventory_list" value="<?php echo $item['itemName'] ?>" />
                     </form>
                 </td>
                 <td>
                     <form action="<?php $_SERVER['PHP_SELF'] ?>" method="post">
                         <input type="submit" value="Delete" name="deleteItem" class="btn deletebutton"
                             title="Permanently delete the record" />
-                        <input type="hidden" name="item_to_delete" value="<?php echo $item['name'] ?>" />
+                        <input type="hidden" name="item_to_delete" value="<?php echo $item['itemName'] ?>" />
                     </form>
                 </td>
             </tr>
