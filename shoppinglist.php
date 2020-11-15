@@ -22,16 +22,16 @@ else {
         }
         // subtract quantity from an item
         elseif (!empty($_POST['subtract_quantity']) && ($_POST['subtract_quantity'] == '-')) {      
-            $itemnameinput = $_POST['itemnameinput']; 
-            $itemcategoryinput = $_POST['itemcategoryinput'];  
+            $quantity = $_POST['item_quantity_subtracted'];
+            if ($quantity < 0) {
+                $quantity = 0;
+            }
             
-            if (updateItemInShoppingList($username, $itemName)) {
-                $notification = 'Successfully updated item in Shopping List!';
+            if (updateItemQuantity($username, $itemName, $quantity, true)) {
                 $items = getAllItems();  
             } else {
-                $notification = 'Unable to update item.';
+
             }
-            $showNotification = true;
         }
         //add item to inventory list
         elseif (!empty($_POST['add_inventory']) && ($_POST['add_inventory'] == 'Add')){
@@ -123,7 +123,7 @@ else {
                         <form action="<?php $_SERVER['PHP_SELF'] ?>" method="post">
                             <input type="submit" value="-" name="subtract_quantity" class="btn minusbutton" />
                             <input type="hidden" name="item_quantity_subtracted"
-                                value=<?php echo $item['quantity'] - 1?> />
+                                value="<?php echo $item['quantity'] - 1 ?>" />
                         </form>
                     </div>
                 </td>

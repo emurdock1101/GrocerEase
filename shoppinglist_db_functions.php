@@ -16,7 +16,6 @@ function addItemToInventoryList($username, $itemName) {
 
   try {
       $query = "SELECT * FROM home_inventory_list WHERE username=:username AND itemName=:itemName LIMIT 1;";
-      //the two will be changed to NULL once we can change the table in phpMyAdmin
       $statement = $db->prepare($query);
       $statement->bindValue(':username', $username);
       $statement->bindValue(':itemName', $itemName);
@@ -24,7 +23,6 @@ function addItemToInventoryList($username, $itemName) {
       $results = $statement->fetchAll(); //array
       if (count($results) == 0) {
           $query = "INSERT INTO home_inventory_list VALUES(:username, :itemName, 1, NULL)";
-          //the 2 will be changed to NULL once we can change the table in phpMyAdmin to be AUTO_INCREMENT
           $statement = $db->prepare($query);
           $statement->bindValue(':username', $username);
           $statement->bindValue(':itemName', $itemName);
@@ -40,21 +38,23 @@ function addItemToInventoryList($username, $itemName) {
   return $addedItem;
 }
 
-function updateItemQuantity($username, $itemName, $quantity) {
+function updateItemQuantity($username, $itemName, $quantity, $subtract) {
   global $db;
-  $addedItem = false;
+  $updatedQuantity = false;
+
+  if ($subtract && $quantity < 0) {
+    return true;
+  }
 
   try {
       $query = "SELECT * FROM shopping_list WHERE username=:username AND itemName=:itemName LIMIT 1;";
-      //the two will be changed to NULL once we can change the table in phpMyAdmin
       $statement = $db->prepare($query);
       $statement->bindValue(':username', $username);
       $statement->bindValue(':itemName', $itemName);
       $statement->execute();
       $results = $statement->fetchAll(); //array
       if (count($results) == 0) {
-          $query = "INSERT INTO shopping_list VALUES(:username, :itemName, 1, 0, NULL)";
-          //the 2 will be changed to NULL once we can change the table in phpMyAdmin to be AUTO_INCREMENT
+          $query = "UPDATE shopping_list SET =:quantity WHERE username=:username AND itemName=:itemName LIMIT 1;";
           $statement = $db->prepare($query);
           $statement->bindValue(':username', $username);
           $statement->bindValue(':itemName', $itemName);
@@ -69,6 +69,14 @@ function updateItemQuantity($username, $itemName, $quantity) {
     }
     return $addedItem;
 }
+
+$query = "UPDATE friends SET major=:major, year=:year WHERE name=:name";
+$statement = $db->prepare($query);
+$statement->bindValue(':name', $name);
+$statement->bindValue(':major', $major);
+$statement->bindValue(':year', $year);
+$statement->execute();
+$statement->closeCursor();    
 
 function deleteShoppingListItem($username, $itemName) {
   global $db;

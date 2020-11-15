@@ -45,7 +45,6 @@ function addItemToInventoryList($username, $itemName) {
 
   try {
       $query = "SELECT * FROM home_inventory_list WHERE username=:username AND itemName=:itemName LIMIT 1;";
-      //the two will be changed to NULL once we can change the table in phpMyAdmin
       $statement = $db->prepare($query);
       $statement->bindValue(':username', $username);
       $statement->bindValue(':itemName', $itemName);
@@ -53,7 +52,6 @@ function addItemToInventoryList($username, $itemName) {
       $results = $statement->fetchAll(); //array
       if (count($results) == 0) {
           $query = "INSERT INTO home_inventory_list VALUES(:username, :itemName, 1, NULL)";
-          //the 2 will be changed to NULL once we can change the table in phpMyAdmin to be AUTO_INCREMENT
           $statement = $db->prepare($query);
           $statement->bindValue(':username', $username);
           $statement->bindValue(':itemName', $itemName);
@@ -75,7 +73,6 @@ function addItemToShoppingList($username, $itemName){
 
   try {
       $query = "SELECT * FROM shopping_list WHERE username=:username AND itemName=:itemName LIMIT 1;";
-      //the two will be changed to NULL once we can change the table in phpMyAdmin
       $statement = $db->prepare($query);
       $statement->bindValue(':username', $username);
       $statement->bindValue(':itemName', $itemName);
@@ -83,7 +80,6 @@ function addItemToShoppingList($username, $itemName){
       $results = $statement->fetchAll(); //array
       if (count($results) == 0) {
           $query = "INSERT INTO shopping_list VALUES(:username, :itemName, 1, 0, NULL)";
-          //the 2 will be changed to NULL once we can change the table in phpMyAdmin to be AUTO_INCREMENT
           $statement = $db->prepare($query);
           $statement->bindValue(':username', $username);
           $statement->bindValue(':itemName', $itemName);
