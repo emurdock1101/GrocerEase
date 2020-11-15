@@ -1,17 +1,17 @@
 <?php
 /******************************/
 // connecting to GCP cloud SQL instance
-// $username = 'root';
-// $password = 'rootpassword';
-// $dbname = 'grocerease_db';
-// $host = 'grocerease-293115:us-east4:grocerease-sql-instance';
+$username = 'root';
+$password = 'rootpassword';
+$dbname = 'grocerease_db';
+$host = 'grocerease-293115:us-east4:grocerease-sql-instance';
 /******************************/
 // connecting to DB on XAMPP (local)
 
-$username = 'root';
-$password = '';
-$host = 'localhost:3306';
-$dbname = 'grocerease_db';
+// $username = 'root';
+// $password = '';
+// $host = 'localhost:3306';
+// $dbname = 'grocerease_db';
 /******************************/
 
 $dsn = "mysql:host=$host;dbname=$dbname";
