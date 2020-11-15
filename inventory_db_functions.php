@@ -59,7 +59,7 @@ function updateItemQuantity($username, $itemName, $quantity, $subtract) {
           $statement = $db->prepare($query);
           $statement->bindValue(':username', $username);
           $statement->bindValue(':itemName', $itemName);
-          $statement->bindValue(':remaining', $remaining);
+          $statement->bindValue(':remaining', $quantity);
           $statement->execute();
           $statement->closeCursor();
           $updatedQuantity = true;

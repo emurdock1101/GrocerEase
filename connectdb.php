@@ -8,8 +8,8 @@
 /******************************/
 // connecting to DB on XAMPP (local)
 
-$username = 'jsarkaria99';
-$password = 'redhot99';
+$username = 'root';
+$password = '';
 $host = 'localhost:3306';
 $dbname = 'grocerease_db';
 /******************************/
