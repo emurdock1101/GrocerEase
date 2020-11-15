@@ -50,9 +50,6 @@ else {
 
           if(addItemToShoppingList($username, $itemName)){
             $notification = 'Successfully added item to Shopping List!';
-            if (!empty($_POST['category']) && $sort != "All Foods"){
-                $items = getCategory($sort);
-            }
           } else{
             $notification = 'Item already exists in Shopping List.';
           }
