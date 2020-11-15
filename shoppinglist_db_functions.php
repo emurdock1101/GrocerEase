@@ -1,42 +1,14 @@
-<?php 
+<?php
 
-function getAllItems() {
+function getAllItemsShoppingList($username) {
     global $db;
-    $query = "SELECT * FROM item_list";
+    $query = "SELECT * FROM shopping_list WHERE username=:username;";
     $statement = $db->prepare($query);
+    $statement->bindValue(':username', $username);
     $statement->execute();
     $results = $statement->fetchAll(); //array
-    $statement->closeCursor();  
+    $statement->closeCursor();
     return $results;
-}
-
-function addItemToAllFoods($itemnameinput, $itemcategoryinput) {  
-    global $db;  
-    $addedItem = false;
-
-    try {
-        $query = "SELECT * FROM item_list WHERE name=:itemnameinput AND catagory=:itemcategoryinput LIMIT 1;";
-        $statement = $db->prepare($query);
-        $statement->bindValue(':itemnameinput', $itemnameinput);
-        $statement->bindValue(':itemcategoryinput', $itemcategoryinput);
-        $statement->execute();
-        $results = $statement->fetchAll(); //array
-        if (count($results) == 0) {
-            $query = "INSERT INTO item_list VALUES(:itemnameinput, :itemcategoryinput, NULL)";
-            $statement = $db->prepare($query);
-            $statement->bindValue(':itemnameinput', $itemnameinput);
-            $statement->bindValue(':itemcategoryinput', $itemcategoryinput);
-            $statement->execute();
-            $statement->closeCursor(); 
-            $addedItem = true;
-        }
-    }
-    catch (Exception $e) {
-        $error_message = $e->getMessage();
-        echo "<p>Error message: $error_message </p>";
-    }
-  
-    return $addedItem;
 }
 
 function addItemToInventoryList($username, $itemName) {
@@ -67,9 +39,13 @@ function addItemToInventoryList($username, $itemName) {
   return $addedItem;
 }
 
-function addItemToShoppingList($username, $itemName){
+function updateItemQuantity($username, $itemName, $quantity, $subtract) {
   global $db;
-  $addedItem = false;
+  $updatedQuantity = false;
+
+  if ($subtract && $quantity < 0) {
+    return true;
+  }
 
   try {
       $query = "SELECT * FROM shopping_list WHERE username=:username AND itemName=:itemName LIMIT 1;";
@@ -78,40 +54,31 @@ function addItemToShoppingList($username, $itemName){
       $statement->bindValue(':itemName', $itemName);
       $statement->execute();
       $results = $statement->fetchAll(); //array
-      if (count($results) == 0) {
-          $query = "INSERT INTO shopping_list VALUES(:username, :itemName, 1, 0, NULL)";
+      if (count($results) != 0) {
+          $query = "UPDATE shopping_list SET quantity=:quantity WHERE username=:username AND itemName=:itemName LIMIT 1;";
           $statement = $db->prepare($query);
           $statement->bindValue(':username', $username);
           $statement->bindValue(':itemName', $itemName);
+          $statement->bindValue(':quantity', $quantity);
           $statement->execute();
           $statement->closeCursor();
-          $addedItem = true;
+          $updatedQuantity = true;
       }
     }
     catch (Exception $e) {
         $error_message = $e->getMessage();
         echo "<p>Error message: $error_message </p>";
     }
-    return $addedItem;
+    return $updatedQuantity;
 }
 
-function deleteAllFoodsItem($username, $itemName) {
+function deleteShoppingListItem($username, $itemName) {
   global $db;
-	$query = "DELETE FROM item_list WHERE name=:name";
+	$query = "DELETE FROM shopping_list WHERE itemName=:itemName AND username=:username";
 	$statement = $db->prepare($query);
-	$statement->bindValue(':name', $itemName);
+	$statement->bindValue(':itemName', $itemName);
+  $statement->bindValue(':username', $username);
 	$statement->execute();      // run query
 	$statement->closeCursor();  // release hold on this connection
   return true;
-}
-
-function getCategory($category) {
-    global $db;
-    $query = "SELECT * FROM item_list WHERE catagory=:category";
-    $statement = $db->prepare($query);
-    $statement->bindValue(':category', $category);
-    $statement->execute();
-    $results = $statement->fetchAll();
-    $statement->closeCursor();
-    return $results;
 }

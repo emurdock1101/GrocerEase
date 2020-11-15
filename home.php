@@ -34,13 +34,13 @@ else {
         //add item to inventory list
         elseif (!empty($_POST['add_inventory']) && ($_POST['add_inventory'] == 'Add')){
           $username = $_SESSION['username'];
-          $itemName = $_POST['item_to_add_inventory'];
+          $itemName = $_POST['item_name_inventory_list'];
 
           if(addItemToInventoryList($username, $itemName)){
             $notification = 'Successfully added item to Inventory List!';
             $items = getAllItems();
           } else{
-            $notification = 'Item already exists in inventory list.';
+            $notification = 'Item already exists in Inventory List.';
           }
           $showNotification = true;
         }
@@ -53,7 +53,7 @@ else {
             $notification = 'Successfully added item to Shopping List!';
             $items = getAllItems();
           } else{
-            $notification = 'Item already exists in shopping list.';
+            $notification = 'Item already exists in Shopping List.';
           }
           $showNotification = true;
         }
@@ -62,17 +62,13 @@ else {
           $username = $_SESSION['username'];
           $itemName = $_POST['item_to_delete'];
           if(deleteAllFoodsItem($username, $itemName)){
-            $notification = 'Successfully deleted item from the list!';
+            $notification = 'Successfully deleted item from All Foods!';
             $items = getAllItems();
           } else{
             $notification = 'Item could not be deleted.';
           }
           $showNotification = true;
         }
-
-        // elseif (!empty($_POST['add_shopping_list']) && ($_POST['add_shopping_list'] == 'Add 1')){
-        //
-        // }
     }
 ?>
 
@@ -108,8 +104,8 @@ else {
     </nav>
     <div class="w3-sidebar w3-bar-block" id="sidebar">
         <a href="home.php" class="w3-bar-item w3-button active">All Foods</a>
-        <a href="" class="w3-bar-item w3-button sidenavbutton">My Inventory</a>
-        <a href="" class="w3-bar-item w3-button sidenavbutton">My Shopping List</a>
+        <a href="inventory.php" class="w3-bar-item w3-button sidenavbutton">My Inventory</a>
+        <a href="shoppinglist.php" class="w3-bar-item w3-button sidenavbutton">My Shopping List</a>
     </div>
     <div id="tablecontainer">
         <h1>Add item</h1>
@@ -194,22 +190,19 @@ else {
                 </td>
                 <td>
                     <form action="<?php $_SERVER['PHP_SELF'] ?>" method="post">
-                        <input type="submit" value="Add" name="add_inventory" class="btn addbutton"
-                            title="Update the record" />
-                        <input type="hidden" name="item_to_update" value="name_of_item_to_update" />
+                        <input type="submit" value="Add" name="add_inventory" class="btn addbutton" />
+                        <input type="hidden" name="item_name_inventory_list" value="<?php echo $item['name'] ?>" />
                     </form>
                 </td>
                 <td>
                     <form action="<?php $_SERVER['PHP_SELF'] ?>" method="post">
                         <input type="submit" value="Add" name="add_shopping_list" class="btn addbutton" />
                         <input type="hidden" name="item_name_shopping_list" value="<?php echo $item['name'] ?>" />
-                        <input type="hidden" name="item_category_shopping_list"
-                            value="<?php echo $item['catagory'] ?>" />
                     </form>
                 </td>
                 <td>
                     <form action="<?php $_SERVER['PHP_SELF'] ?>" method="post">
-                        <input type="submit" value="Delete" name="deleteItem" class="btn btn-danger"
+                        <input type="submit" value="Delete" name="deleteItem" class="btn deletebutton"
                             title="Permanently delete the record" />
                         <input type="hidden" name="item_to_delete" value="<?php echo $item['name'] ?>" />
                     </form>

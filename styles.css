@@ -172,3 +172,35 @@ body {
   -webkit-animation: fadein 0.5s, fadeout 0.5s 2.5s;
   animation: fadein 0.5s, fadeout 0.5s 2.5s;
 }
+
+.plusbutton:hover {
+  background-color: var(--midnightgreen);
+  color: var(--fieryrose);
+}
+
+.plusbutton {
+  background-color: var(--nyanza);
+  color: var(--midnightgreen);
+  margin-left: 10px;
+}
+
+.minusbutton:hover {
+  background-color: var(--midnightgreen);
+  color: var(--fieryrose);
+}
+
+.minusbutton {
+  background-color: var(--fieryrose);
+  color: white;
+  margin-left: 10px;
+}
+
+.deletebutton {
+  background-color: var(--fieryrose);
+  color: white;
+  min-width: 80px;
+}
+.deletebutton:hover {
+  background-color: darkred;
+  color: white;
+}
