@@ -1,4 +1,4 @@
-<?php
+<?php 
 
 function getAllItems() {
     global $db;
@@ -6,12 +6,12 @@ function getAllItems() {
     $statement = $db->prepare($query);
     $statement->execute();
     $results = $statement->fetchAll(); //array
-    $statement->closeCursor();
+    $statement->closeCursor();  
     return $results;
 }
 
-function addItemToAllFoods($itemnameinput, $itemcategoryinput) {
-    global $db;
+function addItemToAllFoods($itemnameinput, $itemcategoryinput) {  
+    global $db;  
     $addedItem = false;
 
     try {
@@ -27,7 +27,7 @@ function addItemToAllFoods($itemnameinput, $itemcategoryinput) {
             $statement->bindValue(':itemnameinput', $itemnameinput);
             $statement->bindValue(':itemcategoryinput', $itemcategoryinput);
             $statement->execute();
-            $statement->closeCursor();
+            $statement->closeCursor(); 
             $addedItem = true;
         }
     }
@@ -35,74 +35,8 @@ function addItemToAllFoods($itemnameinput, $itemcategoryinput) {
         $error_message = $e->getMessage();
         echo "<p>Error message: $error_message </p>";
     }
-    return $addedItem;
+    return $addedItem;   
 }
-
-
-function addItemToInventoryList($username, $itemName) {
-  global $db;
-  $addedItem = false;
-
-  try {
-      $query = "SELECT * FROM home_inventory_list WHERE username=:username AND itemName=:itemName LIMIT 1;";
-      //the two will be changed to NULL once we can change the table in phpMyAdmin
-      $statement = $db->prepare($query);
-      $statement->bindValue(':username', $username);
-      $statement->bindValue(':itemName', $itemName);
-      $statement->execute();
-      $results = $statement->fetchAll(); //array
-      if (count($results) == 0) {
-          $query = "INSERT INTO home_inventory_list VALUES(:username, 3, :itemName, 1)";
-          //the 2 will be changed to NULL once we can change the table in phpMyAdmin to be AUTO_INCREMENT
-          $statement = $db->prepare($query);
-          $statement->bindValue(':username', $username);
-          $statement->bindValue(':itemName', $itemName);
-          $statement->execute();
-          $statement->closeCursor();
-          $addedItem = true;
-      }
-  }
-  catch (Exception $e) {
-      $error_message = $e->getMessage();
-      echo "<p>Error message: $error_message </p>";
-  }
-  return $addedItem;
-}
-
-
-
-
-
-function addItemToShoppingList($username, $itemName){
-  global $db;
-  $addedItem = false;
-
-  try {
-      $query = "SELECT * FROM shopping_list WHERE username=:username AND itemName=:itemName LIMIT 1;";
-      //the two will be changed to NULL once we can change the table in phpMyAdmin
-      $statement = $db->prepare($query);
-      $statement->bindValue(':username', $username);
-      $statement->bindValue(':itemName', $itemName);
-      $statement->execute();
-      $results = $statement->fetchAll(); //array
-      if (count($results) == 0) {
-          $query = "INSERT INTO shopping_list VALUES(:username, 1, :itemName, 1, 0)";
-          //the 2 will be changed to NULL once we can change the table in phpMyAdmin to be AUTO_INCREMENT
-          $statement = $db->prepare($query);
-          $statement->bindValue(':username', $username);
-          $statement->bindValue(':itemName', $itemName);
-          $statement->execute();
-          $statement->closeCursor();
-          $addedItem = true;
-      }
-    }
-    catch (Exception $e) {
-        $error_message = $e->getMessage();
-        echo "<p>Error message: $error_message </p>";
-    }
-    return $addedItem;
-}
-
 
 function getCategory($category) {
     global $db;
@@ -124,7 +58,7 @@ function getCategory($category) {
 //     $statement->bindValue(':major', $major);
 //     $statement->bindValue(':year', $year);
 //     $statement->execute();
-//     $statement->closeCursor();
+//     $statement->closeCursor();    
 // }
 
 // function updateFriend($name, $major, $year)
@@ -137,7 +71,7 @@ function getCategory($category) {
 //     $statement->bindValue(':major', $major);
 //     $statement->bindValue(':year', $year);
 //     $statement->execute();
-//     $statement->closeCursor();
+//     $statement->closeCursor();    
 // }
 
 // function deleteFriend($name)
@@ -148,6 +82,6 @@ function getCategory($category) {
 //     $statement = $db->prepare($query);
 //     $statement->bindValue(':name', $name);
 //     $statement->execute();
-//     $statement->closeCursor();
+//     $statement->closeCursor();    
 // }
 // ?>
