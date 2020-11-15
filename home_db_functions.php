@@ -70,9 +70,6 @@ function addItemToInventoryList($username, $itemName) {
 }
 
 
-
-
-
 function addItemToShoppingList($username, $itemName){
   global $db;
   $addedItem = false;
@@ -101,6 +98,16 @@ function addItemToShoppingList($username, $itemName){
         echo "<p>Error message: $error_message </p>";
     }
     return $addedItem;
+}
+
+function deleteAllFoodsItem($username, $itemName) {
+  global $db;
+	$query = "DELETE FROM item_list WHERE name=:name";
+	$statement = $db->prepare($query);
+	$statement->bindValue(':name', $itemName);
+	$statement->execute();      // run query
+	$statement->closeCursor();  // release hold on this connection
+  return true;
 }
 
 

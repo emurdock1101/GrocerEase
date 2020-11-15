@@ -57,6 +57,18 @@ else {
           }
           $showNotification = true;
         }
+        //delete item from all foods list
+        elseif (!empty($_POST['deleteItem']) && ($_POST['deleteItem'] == 'Delete')) {
+          $username = $_SESSION['username'];
+          $itemName = $_POST['item_to_delete'];
+          if(deleteAllFoodsItem($username, $itemName)){
+            $notification = 'Successfully deleted item from the list!';
+            $items = getAllItems();
+          } else{
+            $notification = 'Item could not be deleted.';
+          }
+          $showNotification = true;
+        }
 
         // elseif (!empty($_POST['add_shopping_list']) && ($_POST['add_shopping_list'] == 'Add 1')){
         //
@@ -168,8 +180,9 @@ else {
                 <tr class="tableheadrow">
                     <th width="20%">Item</th>
                     <th width="20%">Category</th>
-                    <th width="30%">Add to My Inventory</th>
-                    <th width="30%">Add to My Shopping List</th>
+                    <th width="25%">Add to My Inventory</th>
+                    <th width="25%">Add to My Shopping List</th>
+                    <th width="5%">Delete</th>
                 </tr>
             </thead>
             <?php foreach ($items as $item): ?>
@@ -194,6 +207,12 @@ else {
                         <input type="hidden" name="item_category_shopping_list"
                             value="<?php echo $item['catagory'] ?>" />
                     </form>
+                </td>
+                <td>
+                  <form action="<?php $_SERVER['PHP_SELF'] ?>" method="post">
+                    <input type="submit" value="Delete" name="deleteItem" class="btn btn-danger" title="Permanently delete the record" />
+                    <input type="hidden" name="item_to_delete" value="<?php echo $item['name'] ?>" />
+                  </form>
                 </td>
             </tr>
             <?php endforeach; ?>
