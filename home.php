@@ -38,7 +38,6 @@ else {
 
           if(addItemToInventoryList($username, $itemName)){
             $notification = 'Successfully added item to Inventory List!';
-            $items = getAllItems();
           } else{
             $notification = 'Item already exists in Inventory List.';
           }
@@ -51,7 +50,6 @@ else {
 
           if(addItemToShoppingList($username, $itemName)){
             $notification = 'Successfully added item to Shopping List!';
-            $items = getAllItems();
           } else{
             $notification = 'Item already exists in Shopping List.';
           }
