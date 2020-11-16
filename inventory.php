@@ -9,6 +9,7 @@ if(!isset($_SESSION['username'])) {
 }
 //session has started sucessfully
 else {
+    callFixInventory();
     $items = getAllItemsInventoryList($_SESSION['username']);
     $notification = '';
     $showNotification = false;

@@ -72,6 +72,20 @@ function updateItemQuantity($username, $itemName, $quantity, $subtract) {
     return $updatedQuantity;
 }
 
+function callFixInventory() {
+  global $db;
+
+  try {
+      $query = "CALL fixInventory();";
+      $statement = $db->prepare($query);
+      $statement->execute();
+  }
+  catch (Exception $e) {
+        $error_message = $e->getMessage();
+        echo "<p>Error message: $error_message </p>";
+  }
+}
+
 function deleteInventoryListItem($username, $itemName) {
   global $db;
 	$query = "DELETE FROM home_inventory_list WHERE itemName=:itemName AND username=:username";
