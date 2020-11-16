@@ -2,4 +2,11 @@
 runtime: php73
 
 # Defaults to "serve index.php" if not specified
-entrypoint: serve login.php
+entrypoint: serve index.php
+
+handlers:
+  - url: /css
+    static_dir: css
+
+  - url: /images
+    static_dir: images

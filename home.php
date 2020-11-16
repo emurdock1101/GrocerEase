@@ -82,13 +82,13 @@ else {
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css"
         integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
     <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
-    <link rel="stylesheet" href="/styles.css">
-    <link rel="icon" href="favicon.ico" type="image/x-icon">
+    <link rel="stylesheet" href="css/styles.css">
+    <link rel="icon" href="images/favicon.ico" type="image/x-icon">
 </head>
 
 <body>
     <nav class="navbar bg-light topnav">
-        <a href="home.php" class="navbar-brand"><img src="logowide.png" height="35" /></a>
+        <a href="home.php" class="navbar-brand"><img src="images/logowide.png" height="35" /></a>
 
         <form class="form-inline" name="logoutForm" action="<?php $_SERVER['PHP_SELF'] ?>" method="post">
             <span class="navbar-text" id="usernamedisplay">
