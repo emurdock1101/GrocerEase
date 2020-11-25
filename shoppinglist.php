@@ -169,7 +169,7 @@ else {
         x.className = "show";
         setTimeout(function() {
             x.className = x.className.replace("show", "");
-        }, 3000);
+        }, 7000);
     }
     </script>
 </body>
